@@ -97,3 +97,76 @@ st.bar_chart(df_filtrado["sepal_length"])
 st.subheader("Dispersão: Comprimento vs Largura da Pétala")
 st.scatter_chart(df_filtrado[["petal_length", "petal_width"]])
 
+import requests
+
+st.title("📚 Busca de Livros por ISBN")
+st.write("Digite o ISBN de um livro para buscar informações na API da Open Library.")
+
+# Entrada do usuário
+isbn = st.text_input("Informe o ISBN (ex: 9780140328721):")
+
+if isbn:
+    url = f"https://openlibrary.org/isbn/{isbn}.json"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        livro = response.json()
+        
+        st.subheader("📖 Informações do Livro")
+        st.write("**Título:**", livro.get("title", "Não encontrado"))
+        st.write("**Número de páginas:**", livro.get("number_of_pages", "Não informado"))
+        st.write("**Publicado em:**", livro.get("publish_date", "Não informado"))
+
+        # Tenta buscar autores
+        if "authors" in livro:
+            autores = []
+            for autor in livro["authors"]:
+                autor_url = f"https://openlibrary.org{autor['key']}.json"
+                autor_resp = requests.get(autor_url)
+                if autor_resp.status_code == 200:
+                    autor_data = autor_resp.json()
+                    autores.append(autor_data.get("name", "Desconhecido"))
+            st.write("**Autor(es):**", ", ".join(autores))
+    else:
+        st.error("Livro não encontrado. Verifique o ISBN.")
+
+#API de busca do tempo:
+
+
+st.title("☀️ Previsão do Tempo - Open Meteo API")
+
+st.write("Digite o nome de uma cidade para ver a previsão do tempo.")
+
+# Entrada do usuário
+cidade = st.text_input("Cidade:", "São Paulo")
+
+if cidade:
+    # 1. Obter latitude/longitude da cidade (API Nominatim / OpenStreetMap)
+    url_geo = f"https://nominatim.openstreetmap.org/search?city={cidade}&format=json"
+    geo_resp = requests.get(url_geo).json()
+
+    if geo_resp:
+        lat = geo_resp[0]["lat"]
+        lon = geo_resp[0]["lon"]
+
+        # 2. Consultar previsão do tempo
+        url_clima = (
+            f"https://api.open-meteo.com/v1/forecast?"
+            f"latitude={lat}&longitude={lon}&current_weather=true"
+        )
+        clima_resp = requests.get(url_clima).json()
+
+        if "current_weather" in clima_resp:
+            clima = clima_resp["current_weather"]
+
+            st.subheader(f"🌍 Clima em {cidade}")
+            st.write("**Temperatura:**", clima["temperature"], "°C")
+            st.write("**Velocidade do vento:**", clima["windspeed"], "km/h")
+            st.write("**Direção do vento:**", clima["winddirection"], "°")
+        else:
+            st.error("Não foi possível obter os dados do clima.")
+    else:
+        st.error("Cidade não encontrada. Verifique o nome digitado.")
+
+
+
