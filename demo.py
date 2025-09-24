@@ -131,7 +131,7 @@ if isbn:
         st.error("Livro não encontrado. Verifique o ISBN.")
 
 #API de busca do tempo:
-
+import requests
 
 st.title("☀️ Previsão do Tempo - Open Meteo API")
 
