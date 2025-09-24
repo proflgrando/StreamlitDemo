@@ -143,30 +143,21 @@ cidade = st.text_input("Cidade:", "São Paulo")
 if cidade:
     # 1. Obter latitude/longitude da cidade (API Nominatim / OpenStreetMap)
     url_geo = f"https://nominatim.openstreetmap.org/search?city={cidade}&format=json"
-    geo_resp = requests.get(url_geo).json()
-
-    if geo_resp:
-        lat = geo_resp[0]["lat"]
-        lon = geo_resp[0]["lon"]
-
-        # 2. Consultar previsão do tempo
-        url_clima = (
-            f"https://api.open-meteo.com/v1/forecast?"
-            f"latitude={lat}&longitude={lon}&current_weather=true"
-        )
-        clima_resp = requests.get(url_clima).json()
-
-        if "current_weather" in clima_resp:
-            clima = clima_resp["current_weather"]
-
-            st.subheader(f"🌍 Clima em {cidade}")
-            st.write("**Temperatura:**", clima["temperature"], "°C")
-            st.write("**Velocidade do vento:**", clima["windspeed"], "km/h")
-            st.write("**Direção do vento:**", clima["winddirection"], "°")
+    headers = {"User-Agent": "streamlit-app/1.0 (contato@exemplo.com)"}
+    
+    resp = requests.get(url_geo, headers=headers)
+    
+    if resp.status_code == 200:
+        geo_resp = resp.json()
+        if geo_resp:
+            lat = geo_resp[0]["lat"]
+            lon = geo_resp[0]["lon"]
+            # ...
         else:
-            st.error("Não foi possível obter os dados do clima.")
+            st.error("Cidade não encontrada. Verifique o nome digitado.")
     else:
-        st.error("Cidade não encontrada. Verifique o nome digitado.")
+        st.error("Erro ao consultar serviço de geolocalização.")
+
 
 
 
