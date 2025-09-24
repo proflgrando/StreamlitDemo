@@ -130,13 +130,15 @@ if isbn:
     else:
         st.error("Livro não encontrado. Verifique o ISBN.")
 
-#API de busca do tempo:
+import streamlit as st
 import requests
+import pandas as pd
 
 st.title("☀️ Previsão do Tempo - Open Meteo API")
 
 st.write("Digite o nome de uma cidade para ver a previsão do tempo.")
 
+#App forecast
 # Entrada do usuário
 cidade = st.text_input("Cidade:", "São Paulo")
 
@@ -144,19 +146,51 @@ if cidade:
     # 1. Obter latitude/longitude da cidade (API Nominatim / OpenStreetMap)
     url_geo = f"https://nominatim.openstreetmap.org/search?city={cidade}&format=json"
     headers = {"User-Agent": "streamlit-app/1.0 (contato@exemplo.com)"}
-    
+
     resp = requests.get(url_geo, headers=headers)
-    
+
     if resp.status_code == 200:
         geo_resp = resp.json()
         if geo_resp:
             lat = geo_resp[0]["lat"]
             lon = geo_resp[0]["lon"]
-            # ...
+
+            # 2. Consultar previsão do tempo (próximos 5 dias, de hora em hora)
+            url_clima = (
+                f"https://api.open-meteo.com/v1/forecast?"
+                f"latitude={lat}&longitude={lon}"
+                f"&hourly=temperature_2m"
+                f"&forecast_days=5"
+                f"&timezone=auto"
+            )
+            clima_resp = requests.get(url_clima).json()
+
+            if "hourly" in clima_resp:
+                # Dados atuais
+                st.subheader(f"🌍 Clima em {cidade}")
+                st.write("Latitude:", lat, "Longitude:", lon)
+
+                # Criar DataFrame com previsão
+                df = pd.DataFrame({
+                    "Hora": clima_resp["hourly"]["time"],
+                    "Temperatura (°C)": clima_resp["hourly"]["temperature_2m"]
+                })
+
+                # Mostrar tabela
+                st.write("📅 Previsão Horária")
+                st.dataframe(df.head(24))  # mostra só o 1º dia
+
+                # Gráfico
+                st.subheader("📊 Gráfico de Temperatura (Próximos 5 dias)")
+                st.line_chart(df.set_index("Hora"))
+
+            else:
+                st.error("Não foi possível obter a previsão.")
         else:
             st.error("Cidade não encontrada. Verifique o nome digitado.")
     else:
         st.error("Erro ao consultar serviço de geolocalização.")
+
 
 
 
