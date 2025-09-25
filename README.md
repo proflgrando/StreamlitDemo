@@ -52,7 +52,6 @@ StreamlitDemo/
 ├─ demo.py
 ├─ requirements.txt
 ├─ .streamlit/
-├─ data/
 ├─ README.md
 
 
