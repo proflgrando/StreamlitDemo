@@ -15,7 +15,7 @@ if nome:
 st.title("Explorando Widgets")
 
 # Slider
-numero = st.slider("Qual seu peso", 1, 100, 25)
+numero = st.slider("Qual seu peso", 1, 200, 25)
 st.write("Você escolheu:", numero)
 
 # Botão
