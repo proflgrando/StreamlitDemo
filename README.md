@@ -48,14 +48,13 @@ streamlit run demo.py
 
 ## 📂 Estrutura do Projeto
 
-```
 StreamlitDemo/
 ├─ demo.py
 ├─ requirements.txt
 ├─ .streamlit/
 ├─ data/
 ├─ README.md
-```
+
 
 ---
 
