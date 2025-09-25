@@ -36,3 +36,43 @@ source venv/bin/activate  # Linux/Mac
 venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 streamlit run demo.py
+
+---
+
+## ☁️ Deploy no Streamlit Cloud
+
+* Repositório: [`proflgrando/StreamlitDemo`](https://github.com/proflgrando/StreamlitDemo)
+* App online: [Abrir App](https://testeapp-pwaaj6qwgna38ekkhkaefo.streamlit.app/)
+
+---
+
+## 📂 Estrutura do Projeto
+
+```
+StreamlitDemo/
+├─ demo.py
+├─ requirements.txt
+├─ .streamlit/
+├─ data/
+├─ README.md
+```
+
+---
+
+## 📄 requirements.txt
+
+```text
+streamlit
+pandas
+numpy
+seaborn
+requests
+matplotlib
+```
+
+```
+
+
+
+
+
