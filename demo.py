@@ -1,7 +1,7 @@
 #1. Primeiro App
 import streamlit as st
 
-st.title("Olá, Streamlit! 🚀")
+st.title("Olá, Melhor sala de construção de algoritmos do mundo! 🚀")
 st.subheader("Meu primeiro aplicativo web com Python")
 
 st.write("Este é um app simples feito em **Streamlit**.")
