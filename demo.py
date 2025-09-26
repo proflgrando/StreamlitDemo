@@ -1,7 +1,7 @@
 #1. Primeiro App
 import streamlit as st
 
-st.title("Olá, Melhor sala de construção de algoritmos do mundo! 🚀")
+st.title("Exemplo de uso do Streamlit! 🚀")
 st.subheader("Meu primeiro aplicativo web com Python")
 
 st.write("Este é um app simples feito em **Streamlit**.")
@@ -15,8 +15,8 @@ if nome:
 st.title("Explorando Widgets")
 
 # Slider
-numero = st.slider("Qual seu peso", 1, 200, 25)
-st.write("Você escolheu:", numero)
+numero = st.slider("Qual sua idade? ", 1, 200, 25)
+st.write("Você tem:", numero, "anos")
 
 # Botão
 if st.button("Clique para celebrar!"):
