@@ -29,7 +29,7 @@ if check:
 
 # Lista suspensa
 opcao = st.selectbox("Escolha uma linguagem de programação",
-                     ["Python", "Java", "C++", "JavaScript"])
+                     ["Python", "Java", "C", "JavaScript"])
 st.write("Você escolheu:", opcao)
 
 #3. Visualização de Dados Aleatórios
